@@ -23,9 +23,9 @@ export default () => {
     feedback: document.querySelector('.feedback'),
   };
 
-  const i18nextInctance = i18next.createInstance();
+  const i18nextInstance = i18next.createInstance();
 
-  const promise = i18nextInctance.init({
+  const promise = i18nextInstance.init({
     lng: 'ru',
     resources,
   })
@@ -40,7 +40,7 @@ export default () => {
           .catch((error) => error.massage);
       };
 
-      const watchedState = watcher(initState, elements, i18nextInctance);
+      const watchedState = watcher(initState, elements, i18nextInstance);
 
       elements.form.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -64,8 +64,7 @@ export default () => {
             }
           });
       });
-      console.log(watchedState)
-      return promise;
-      
     });
+
+  return promise;
 };

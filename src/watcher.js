@@ -9,7 +9,7 @@ export default (initState, elements, i18next) => {
       input.classList.remove('is-invalid');
     } else {
       input.classList.add('is-invalid');
-      feedback.classList.add('ext-danger');
+      feedback.classList.add('text-danger');
       feedback.textContent = i18next.t(`errors.${error}`);
     }
   };
