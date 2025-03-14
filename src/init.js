@@ -2,7 +2,7 @@ import 'bootstrap';
 import i18next from 'i18next';
 import * as yup from 'yup';
 
-import resourses from './locales/index.js';
+import resources from './locales/index.js';
 import watcher from './watcher.js';
 import local from './locales/local.js';
 
@@ -27,7 +27,7 @@ export default () => {
 
   const promise = i18nextInctance.init({
     lng: 'ru',
-    resourses,
+    resources,
   })
     .then(() => {
       yup.setLocale(local);
@@ -64,7 +64,8 @@ export default () => {
             }
           });
       });
-
+      console.log(watchedState)
       return promise;
+      
     });
 };
