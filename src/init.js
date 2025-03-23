@@ -32,12 +32,12 @@ export default () => {
     .then(() => {
       yup.setLocale(local);
       const validateUrl = (url, feeds) => {
-        const feedUrl = feeds.map((e) => e.url);
+        const feedUrl = feeds.map((feed) => feed.url);
         const schema = yup.string().url().required().notOneOf(feedUrl);
-
+        
         return schema.validate(url)
           .then(() => null)
-          .catch((error) => error.massage);
+          .catch((error) => error.message);
       };
 
       const watchedState = watcher(initState, elements, i18nextInstance);
@@ -46,7 +46,7 @@ export default () => {
         event.preventDefault();
         const data = new FormData(event.target);
         const url = data.get('url');
-
+        
         validateUrl(url, watchedState.feeds)
           .then((error) => {
             if (!error) {
@@ -58,13 +58,13 @@ export default () => {
             } else {
               watchedState.form = {
                 ...watchedState.form,
-                error: error.key,
+                error: error,
                 valid: false,
               };
             }
           });
       });
     });
-
+    
   return promise;
 };
