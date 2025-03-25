@@ -4,6 +4,6 @@ export default {
   },
   mixed: {
     required: () => 'empty',
-    notOneOf: () => 'exists',
+    notOneOf: () => 'exist',
   },
 };
