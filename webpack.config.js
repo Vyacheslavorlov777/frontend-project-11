@@ -20,7 +20,6 @@ export default {
     clean: true,
   },
   ignoreWarnings: [
-  // eslint-disable-next-line
     (warning) => true,
   ],
 };
