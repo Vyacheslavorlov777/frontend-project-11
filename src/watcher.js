@@ -1,7 +1,7 @@
 import onChange from 'on-change';
 
-export default (initState, elements, i18next) => {
-  const handleForm = (state) => {
+export default (state, elements, i18next) => {
+  const handleForm = () => {
     const { form: { error, valid } } = state;
     const { input, feedback } = elements;
 
@@ -14,40 +14,40 @@ export default (initState, elements, i18next) => {
     }
   };
 
-  const handleLoadingProcessStatus = (state) => {
+  const handleLoadingProcessStatus = () => {
     const { loadingProcess } = state;
     const { submit, input, feedback } = elements;
 
     switch (loadingProcess.status) {
-        case 'failed':
-            submit.disabled = false;
-            input.removeAttribute('readonly');
-            feedback.classList.add('text-danger');
-            feedback.textContent = i18next.t('errors.unknown')
-            // `errors.${loadingProcess.error}`, 
-            break;
-        case 'idle':
-            submit.disabled = false;
-            input.removeAttribute('readonly');
-            input.value = '';
-            feedback.classList.remove('text-danger')
-            feedback.classList.add('text-success');
-            feedback.textContent = i18next.t('loading.success');
-            input.focus();
-            break;
-        case 'loading':
-            submit.disabled = true;
-            input.removeAttribute('readonly', true);
-            feedback.classList.add('text-success');
-            feedback.classList.add('text-danger');
-            feedback.textContent = '';
-            break;
-        default:
-            throw new Error(`Unknown loadingProcess status: '${loadingProcess.status}'`)
+      case 'failed':
+        submit.disabled = false;
+        input.removeAttribute('readonly');
+        feedback.classList.add('text-danger');
+        feedback.textContent = i18next.t('errors.unknown');
+        // `errors.${loadingProcess.error}`,
+        break;
+      case 'idle':
+        submit.disabled = false;
+        input.removeAttribute('readonly');
+        input.value = '';
+        feedback.classList.remove('text-danger');
+        feedback.classList.add('text-success');
+        feedback.textContent = i18next.t('loading.success');
+        input.focus();
+        break;
+      case 'loading':
+        submit.disabled = true;
+        input.removeAttribute('readonly', true);
+        feedback.classList.add('text-success');
+        feedback.classList.add('text-danger');
+        feedback.textContent = '';
+        break;
+      default:
+        throw new Error(`Unknown loadingProcess status: '${loadingProcess.status}'`);
     }
   };
 
-  const handleFeeds = (state) => {
+  const handleFeeds = () => {
     const { feeds } = state;
     const { feedsBox } = elements;
 
@@ -66,16 +66,16 @@ export default (initState, elements, i18next) => {
     feedsList.classList.add('list-group', 'border-0', 'rounded-0');
 
     const feedsListItems = feeds.map((feed) => {
-        const element = document.createElement('li');
-        element.classList.add('list-group-item', 'border-0', 'border-end-0');
-        const title = document.createElement('h3');
-        title.classList.add('h6', 'm-0');
-        title.textContent = feed.title;
-        const description = document.createElement('p');
-        description.classList.add('m-0', 'small', 'text-black-50');
-        description.textContent = feed.description;
-        element.append(title, description);
-        return element;
+      const element = document.createElement('li');
+      element.classList.add('list-group-item', 'border-0', 'border-end-0');
+      const title = document.createElement('h3');
+      title.classList.add('h6', 'm-0');
+      title.textContent = feed.title;
+      const description = document.createElement('p');
+      description.classList.add('m-0', 'small', 'text-black-50');
+      description.textContent = feed.description;
+      element.append(title, description);
+      return element;
     });
 
     feedsList.append(...feedsListItems);
@@ -84,10 +84,10 @@ export default (initState, elements, i18next) => {
     feedsBox.appendChild(structure);
   };
 
-  const handlePosts = (state) => {
-    const { posts } = state;
+  const handlePosts = () => {
+    const { posts, uiState } = state;
     const { postsBox } = elements;
-    
+
     const structure = document.createElement('div');
     structure.classList.add('card', 'border-0');
     structure.innerHTML = `
@@ -103,49 +103,65 @@ export default (initState, elements, i18next) => {
     postsList.classList.add('list-group', 'border-0', 'rounded-0');
 
     const postsListItems = posts.map((post) => {
-        const element = document.createElement('li');
-        element.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
-        const link = document.createElement('a');
-        link.setAttribute('href', post.link);
-        link.classList.add('fw-bold');
-        link.dataset.id = post.id
-        link.textContent = post.title;
-        link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noopener noreferrer');
-        element.appendChild(link);
+      const element = document.createElement('li');
+      element.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
+      const link = document.createElement('a');
+      link.setAttribute('href', post.link);
+      const className = uiState.seenPosts.has(post.id) ? ['fw-normal', 'link-secondary'] : ['fw-bold'];
+      link.classList.add(...className);
+      link.dataset.id = post.id;
+      link.textContent = post.title;
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+      element.appendChild(link);
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button')
-        button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
-        button.dataset.id = post.id;
-        button.dataset.bsToggle = 'modal';
-        button.dataset.bsTarget = '#modal';
-        button.textContent = i18next.t('view');
-        element.appendChild(button);
-        return element;
+      const button = document.createElement('button');
+      button.setAttribute('type', 'button');
+      button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
+      button.dataset.id = post.id;
+      button.dataset.bsToggle = 'modal';
+      button.dataset.bsTarget = '#modal';
+      button.textContent = i18next.t('view');
+      element.appendChild(button);
+      return element;
     });
 
     postsList.append(...postsListItems);
     structure.appendChild(postsList);
     postsBox.innerHTML = '';
     postsBox.appendChild(structure);
-  }
+  };
 
+  const handleModal = () => {
+    const post = state.posts.find(({ id }) => id === state.uiState.modal.postId);
+    const title = elements.modal.querySelector('.modal-title');
+    const body = elements.modal.querySelector('.modal-body');
+    const articleBtn = elements.modal.querySelector('.full-article');
 
+    title.textContent = post.title;
+    body.textContent = post.description;
+    articleBtn.href = post.link;
+  };
 
-  const watchedState = onChange(initState, (path) => {
+  const watchedState = onChange(state, (path) => {
     switch (path) {
       case 'form':
-        handleForm(initState);
+        handleForm();
         break;
       case 'loadingProcess.status':
-        handleLoadingProcessStatus(initState);
+        handleLoadingProcessStatus();
         break;
       case 'feeds':
-        handleFeeds(initState);
+        handleFeeds();
         break;
       case 'posts':
-        handlePosts(initState);
+        handlePosts();
+        break;
+      case 'uiState.modal.postId':
+        handleModal();
+        break;
+      case 'uiState.seenPosts':
+        handlePosts();
         break;
       default:
         break;
