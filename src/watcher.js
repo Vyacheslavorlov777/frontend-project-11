@@ -23,8 +23,7 @@ export default (state, elements, i18next) => {
         submit.disabled = false;
         input.removeAttribute('readonly');
         feedback.classList.add('text-danger');
-        feedback.textContent = i18next.t('errors.unknown');
-        // `errors.${loadingProcess.error}`,
+        feedback.textContent = i18next.t(`errors.${loadingProcess.error}`, 'errors.unknown');
         break;
       case 'idle':
         submit.disabled = false;
