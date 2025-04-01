@@ -48,7 +48,7 @@ const fetchNewPosts = (watchedState) => {
 };
 
 const loadRss = (watchedState, url) => {
-  watchedState.loadingProcess.status = 'loading';
+  watchedState.loadingProcess.status = 'loading'; // eslint-disable-line no-param-reassign
   const urlProxy = addProxy(url);
   return axios.get(urlProxy)
     .then((response) => {
@@ -62,9 +62,9 @@ const loadRss = (watchedState, url) => {
       watchedState.posts.unshift(...posts);
       watchedState.feeds.unshift(feed);
 
-      watchedState.loadingProcess.error = null;
-      watchedState.loadingProcess.status = 'idle';
-      watchedState.form = {
+      watchedState.loadingProcess.error = null; // eslint-disable-line no-param-reassign
+      watchedState.loadingProcess.status = 'idle'; // eslint-disable-line no-param-reassign
+      watchedState.form = { // eslint-disable-line no-param-reassign
         ...watchedState.form,
         status: 'filling',
         error: null,
@@ -72,8 +72,8 @@ const loadRss = (watchedState, url) => {
     })
     .catch((e) => {
       console.log(e);
-      watchedState.loadingProcess.error = getLoadingProcessError(e);
-      watchedState.loadingProcess.status = 'failed';
+      watchedState.loadingProcess.error = getLoadingProcessError(e); // eslint-disable-line no-param-reassign
+      watchedState.loadingProcess.status = 'failed'; // eslint-disable-line no-param-reassign
     });
 };
 
