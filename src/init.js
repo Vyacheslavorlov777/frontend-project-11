@@ -12,6 +12,7 @@ import parse from './rss.js';
 const addProxy = (url) => {
   const urlProxy = new URL('/get', 'https://allorigins.hexlet.app');
   urlProxy.searchParams.set('url', url);
+  urlProxy.searchParams.set('disableCache', 'true');
   return urlProxy.toString();
 };
 
