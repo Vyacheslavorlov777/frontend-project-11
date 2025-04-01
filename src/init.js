@@ -26,7 +26,7 @@ const getLoadingProcessError = (e) => {
   return 'unknow';
 };
 
-const fetchNewPosts = (watchedState) => {  
+const fetchNewPosts = (watchedState) => {
   const promises = watchedState.feeds.map((feed) => {
     const urlWithProxy = addProxy(feed.url);
     return axios.get(urlWithProxy)
