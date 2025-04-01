@@ -72,6 +72,7 @@ const loadRss = (watchedState, url) => {
     })
     .catch((e) => {
       console.log(e);
+      // eslint-disable-next-line max-len
       watchedState.loadingProcess.error = getLoadingProcessError(e); // eslint-disable-line no-param-reassign
       watchedState.loadingProcess.status = 'failed'; // eslint-disable-line no-param-reassign
     });
